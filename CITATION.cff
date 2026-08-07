@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+
+message: >-
+  If you use parts of this code, please cite the associated manuscript and this
+  repository.
+
+type: custom code
+
+title: >-
+  9.4 Tesla Dataset for Precision Retinotopy in the Human Brain: Analysis Code
+
+abstract: >-
+  Custom code for preprocessing and analyzing the  9.4 Tesla Dataset for Precision Retinotopy in the Human Brain.
+  The repository contains pipelines for functional and
+  anatomical preprocessing, coregistration, population receptive field
+  modelling.
+
+authors:
+  - family-names: Ramadan
+    given-names: Dana
+    email: dana.ramadan@tuebingen.mpg.de
+    affiliation: Max Planck Institute for Biological Cybernetics, Tuebingen, Germany
+
+keywords:
+  - ultra-high-field MRI
+  - 9.4 Tesla
+  - precision retinotopy
+  - population receptive field mapping
+  - pRF modelling
+  - functional MRI
+  - visual cortex
+  - submillimeter resolution
+
+license: MIT
+
+repository-code: >-
+  https://github.com/ramadanad/precret-manuscript
+
+url: >-
+  https://github.com/ramadanad/precret-manuscript
