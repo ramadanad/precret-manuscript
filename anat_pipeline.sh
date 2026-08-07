@@ -101,21 +101,21 @@ echo "========================================"
 # Define steps based on exactly two processing modes.
 if [[ "$PROCESSING_MODE" == "MULTI_SESSION" ]]; then
     STEPS=(
-        # "a0_setup.sh"
-        # "a123_parallel.sh"
+        "a0_setup.sh"
+        "a123_parallel.sh"
         "a4_reconall.sh"
         "a5_benson14.sh"
-        # # "a6_convert_labels.sh"  # Disabled for testing pipeline without Step 6 ... everything works without it, so optional..
-        # "a7_convert_t1mgz.sh"
+        # "a6_convert_labels.sh"  # Disabled for testing pipeline without Step 6 ... everything works without it, so optional..
+        "a7_convert_t1mgz.sh"
     )
 
     STEP_DESCRIPTIONS=(
-        # "Data setup and validation"
-        # "Bias field correction, skull stripping, and template creation (all sessions in parallel)"
+        "Data setup and validation"
+        "Bias field correction, skull stripping, and template creation (all sessions in parallel)"
         "FreeSurfer recon-all (autorecon1, autorecon2, autorecon3)"
         "Benson14 retinotopy mapping (if recon-all successful)"
-        # # "Convert cortex labels to NIfTI"  # Disabled for testing pipeline without Step 6 ... everything works without it, so optional..
-        # "Convert T1.mgz to NIfTI"
+        # "Convert cortex labels to NIfTI"  # Disabled for testing pipeline without Step 6 ... everything works without it, so optional..
+        "Convert T1.mgz to NIfTI"
     )
 else
     STEPS=(
