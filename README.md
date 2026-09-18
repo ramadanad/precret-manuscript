@@ -1,6 +1,6 @@
 # precret-manuscript
 
-This repository contains the custom code used for the manuscript describing the **9.4 Tesla Dataset for Precision Retinotopy in the Human Brain”**.
+This repository contains the custom code used for the manuscript entitled **A 9.4 Tesla Dataset for Precision Retinotopy in the Human Brain**.
 
 The dataset contains population receptive field (pRF) mapping data acquired at the 9.4 T MRI scanner at the Max Planck Institute for Biological Cybernetics in Tübingen, Germany. Six healthy volunteers viewed a moving-bar stimulus during five or seven scanning sessions. Data were acquired at 0.8 mm isotropic resolution using both 3D EPI and 3D bSSFP sequences.
 
@@ -8,15 +8,15 @@ For questions or to report an issue, please contact [Dana Ramadan](mailto:dana.r
 
 ## Paper
 
-The preprint is available [here](INSERT_PREPRINT_URL).
+A link to the paper will be provided upon publication.
 
 ## Data
 
-The dataset is available on [OpenNeuro](INSERT_OPENNEURO_URL).
+The dataset is available on [OpenNeuro](https://openneuro.org/datasets/ds008702).
 
 ## Stimulus code
 
-The code used to generate and present the experimental stimulus is available in the separate [`precret-stimulus`](INSERT_STIMULUS_REPOSITORY_URL) repository.
+The code used to generate and present the experimental stimulus is available in the separate [`precret-stimulus`](https://github.com/ramadanad/precret-stimulus) repository.
 
 ## Overview of the processing workflow
 
@@ -44,19 +44,15 @@ The FAmap pipeline is separate from the main workflow. It is not called by `main
 bash famap_pipeline.sh <BIDS_ROOT>
 ```
 
-Its processing scripts are located in `famap_steps/`. This processes all subjects in the dataset, so no subject ID is required.
-
-### Defacing
-The documented workflow begins **after defacing**. Before running the pipeline, the MPRAGE image from each session must be defaced with [PyDeface](https://github.com/poldracklab/pydeface). In this workflow, PyDeface is applied only to the MPRAGE images.
+Its processing scripts are located in `famap_steps/`.
 
 ### Common functions
-The file `common_functions.sh` contains shell functions shared by multiple pipeline scripts. Within each pipeline directory, scripts are numbered according to their intended execution order. Individual steps can be run separately when needed, although running the corresponding pipeline script is recommended for the standard workflow. The container paths are defined here.
+The file `common_functions.sh` contains shell functions shared by multiple pipeline scripts. Within each pipeline directory, scripts are numbered according to their intended execution order. Individual steps can be run separately when needed.
 
 ### Script naming
 Some scripts have similar filename prefixes because one script calls another. These are separate scripts with different purposes; inspect the scripts themselves for the exact calling relationship.
 
 ### Other directories
-
 - `misc/` contains miscellaneous scripts and files, including Python environment files and files required by the pRF workflow.
 - `dr_samsrf/` contains the modified SamSrf code used in this project.
 - `plotting/` contains scripts for plotting the results.
@@ -75,9 +71,9 @@ bash func_pipeline.sh <BIDS_ROOT> <SUBJECT>
 
 See `func_steps/` for the complete set of steps. The main processing stages include:
 
-- Dummy-scan removal using FSL: `f2_dummy_removal.py`
+- Dummy-volume removal using FSL: `f2_dummy_removal.py`
 - Motion correction using SPM25: `f3_run_mo-co.sh`
-- Quality-assurance metric calculation using Python: `f6_run_qa.sh`
+- Quality-assurance metric (tSNR, skewness, kurtosis) calculation using Python: `f6_run_qa.sh`
 - Distortion correction using TOPUP: `f7_topup.sh`
 
 ### 2. Anatomical preprocessing
@@ -143,15 +139,6 @@ See `famap_steps/` for the complete set of steps. The main processing stages inc
 - Coregistration of flip-angle maps to the T1 image using FreeSurfer: `fa1_run_coreg.sh`
 - Conversion of MGH files to SamSrf files: `fa2_run_mgh2srf.sh`
 
-## Vessel reconstruction
-
-Vessel probability map creation is not part of the processing pipelines described above. Vessel maps were generated separately using the following workflow:
-
-1. Manual reconstruction of the ME-GRE data.
-2. Coil combination.
-3. Processing with [CLEARSWI](https://github.com/korbinian90/CLEARSWI.jl).
-4. Generation of vessel-probability maps with [VesSynth](https://github.com/chiara-mauri/VesSynth).
-
 
 ## Software requirements
 
@@ -163,9 +150,9 @@ The following software versions were used for preprocessing and analysis:
 | FreeSurfer | 8.1.0 |
 | FSL | 6.0.7.16 |
 | ANTs | 2.6.0 |
-| PyDeface | 2.0.2 |
-| MATLAB | R2024b |
 | SamSrfX | 10.201 |
+| MATLAB | R2024b |
+| Python | 3.14.3 |
 
 ### Containers
 
@@ -173,23 +160,14 @@ The required containers are not included in this repository. Store them in a sep
 
 The containers used for this project were obtained from [Neurodesk](https://github.com/neurodesk):
 
-- [FreeSurfer 8.1.0](https://github.com/neurodesk/neurocontainers/pkgs/container/freesurfer_8.1.0), pulled on 2025-11-13.
-- [ANTs 2.6.0](https://github.com/neurodesk/neurocontainers/pkgs/container/ants_2.6.0), build 20250424.
-- [FSL 6.0.7.16](https://github.com/neurodesk/neurocontainers/pkgs/container/fsl_6.0.7.16), build 20250131.
+- [FreeSurfer 8.1.0](https://github.com/neurodesk/neurocontainers/pkgs/container/freesurfer_8.1.0/485349774?tag=20250812)
+- [ANTs 2.6.0](https://github.com/neurodesk/neurocontainers/pkgs/container/ants_2.6.0/401471464?tag=20250424)
+- [FSL 6.0.7.16](https://github.com/neurodesk/neurocontainers/pkgs/container/fsl_6.0.7.16/346764397?tag=20250131)
 
 ### Other software
 
-- [PyDeface 2.0.2](https://github.com/poldracklab/pydeface), obtained on 2026-04-04. DOI: [10.5281/zenodo.6856482](https://doi.org/10.5281/zenodo.6856482).
-- [SamSrfX 10.201](https://github.com/samsrf/samsrf), commit `85e3609`.
-
-The SamSrfX source was downloaded with:
-
-```bash
-curl -L -o samsrf-85e3609.zip \
-  https://github.com/samsrf/samsrf/archive/85e36097b37c50a5b395a0eef9e62f08e69da468.zip
-```
-
-Minor modifications were made to SamSrfX. The modified code is included in `dr_samsrf/`.
+- [PyDeface 2.0.2](https://github.com/poldracklab/pydeface), commit `38a6346`. DOI: [10.5281/zenodo.6856482](https://doi.org/10.5281/zenodo.6856482)
+- [SamSrfX 10.201](https://github.com/samsrf/samsrf), commit `85e3609`. Minor modifications were made to SamSrfX. The modified code is included in `dr_samsrf/`.
 
 ## Python environments
 
@@ -209,10 +187,9 @@ conda env create --file misc/benson_atlas.yml
 conda activate benson_atlas
 ```
 
-
 ## Running individual steps
 
-To run a complete workflow, use the relevant pipeline entry point. To rerun or debug a single processing stage, enter the corresponding step directory and run the numbered script directly. Check the script first for required inputs, environment variables, and configuration paths.
+To run a complete workflow, use the relevant pipeline entry point. To rerun or debug a single processing step, enter the corresponding step directory and run the numbered script directly. Check the script first for required inputs, environment variables, and configuration paths.
 
 For example:
 
@@ -222,3 +199,8 @@ bash f7_topup.sh <BIDS_root> <SUBJECT> <SESSION> <FSL_CONTAINER_PATH>
 ```
 
 The exact command may differ if a script is intended to be sourced rather than executed directly; consult the script header and its callers before running it independently.
+
+## Not included
+Please note that the following steps are not included in this repository, but are explained in detail in the manuscript:
+1. Defacing of MPRAGE
+2. Processing of the ME-GRE to get the SWI and the vessel probability maps
